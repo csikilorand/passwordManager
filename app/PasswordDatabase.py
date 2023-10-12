@@ -12,22 +12,22 @@ class PasswordDatabase():
     
            
     def __create_table__(self):
-        self.cursor.execute('''CREATE TABLE IF NOT EXISTS passwords (
+        self.cursor.execute(f'''CREATE TABLE IF NOT EXISTS {self.table_name} (
                             service TEXT,
                             username TEXT,
                             password TEXT
                         )''')
         self.connection.commit()
         
+        
     
     def save_data(self, new_data:tuple):
         website, username, password = new_data
         self.cursor.execute(f"INSERT INTO {self.table_name} VALUES (?, ?, ?)", (website, username, password))
         self.connection.commit()
+        
     
-    def retrieve_data(self, data):
-        pass
-            
-    def retrieve_data(self, what_to_retrieve:str):
-        pass
-            
+    def get_password(self, website, username):
+        self.cursor.execute("SELECT password FROM passwords WHERE service = ? AND username = ?", (website, username))
+        result = self.cursor.fetchone()
+        return result[0] if result else None
