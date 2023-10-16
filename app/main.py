@@ -1,8 +1,14 @@
 from PasswordManager import PasswordManager
+from PasswordDatabase import PasswordDatabase
 import getpass
 
 myPasswordManager = PasswordManager('key.key', 'passwords.txt')
 myPasswordManager.save_password(service='website', username='google', password='12356')
+myPasswordDatabase = PasswordDatabase('passwords.db', 'passwords')
+tempdata = ('website', 'google', '123456')
+myPasswordDatabase.save_data(tempdata)
+
+
 
 while True:
     print("\nPassword Manager Menu:")
