@@ -1,4 +1,3 @@
-# PasswordManager.py
 from cryptography.fernet import Fernet
 import os
 
@@ -20,11 +19,15 @@ class PasswordManager:
                 key = file.read()
         return key
 
-    def save_password(self, service, username, password):
+    def save_password_txt(self, service, username, password):
         fernet = Fernet(self.key)
         encrypted_password = fernet.encrypt(password.encode())
         with open(self.password_file, 'a') as file:
             file.write(f"{service}:{username}:{encrypted_password.decode()}\n")
+    def encrypt_pass(self, password)-> str:
+        fernet = Fernet(self.key)
+        encrypted_password = fernet.encrypt(password.encode())
+        return encrypted_password.decode()
 
     def get_password(self, service, username):
         fernet = Fernet(self.key)

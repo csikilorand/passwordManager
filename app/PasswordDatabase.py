@@ -27,7 +27,7 @@ class PasswordDatabase():
         self.connection.commit()
         
     
-    def list_all_website_with_username(self, username: str):
+    def list_all_website_with_single_username(self, username: str):
         self.cursor.execute(f"SELECT service FROM {self.table_name} WHERE username = (?)", username)
         result = self.cursor.fetchall()
         if len(result) > 0:
@@ -44,7 +44,21 @@ class PasswordDatabase():
         result = self.cursor.fetchall()
         if len(result > 0):
             return result
-        else: raise EmptyResponseError("Empty result received")
+        else:
+            raise EmptyResponseError("Empty result received")
+            
 
+    def update_username(self, new_username:str, website:str):
+        self.cursor.execute(f"SELECT username FROM {self.table_name} WHERE service =(?)",website)
+        result = self.cursor.fetchone()
+        if len(result) == len(list()):
+            raise NoDataAvailableException("No data found by this website")
+        else:
+            query = "UPDATE passwords SET username = (?) WHERE = (?)"
+            self.cursor.execute(query, (new_username, website))
+            self.connection.commit()
+
+    def update_password(self, new_password):
+        pass
     def close_connection(self):
         self.connection.close()
