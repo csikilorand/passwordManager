@@ -12,18 +12,20 @@ class PasswordDatabase():
     
            
     def __create_table__(self):
-        self.cursor.execute('''CREATE TABLE IF NOT EXISTS passwords (
+        self.cursor.execute(f'''CREATE TABLE IF NOT EXISTS {self.table_name} (
                             service TEXT,
                             username TEXT,
                             password TEXT
                         )''')
         self.connection.commit()
         
+        
     
     def save_data(self, new_data:tuple):
         website, username, password = new_data
         self.cursor.execute(f"INSERT INTO {self.table_name} VALUES (?, ?, ?)", (website, username, password))
         self.connection.commit()
+        
     
     def list_all_website_with_username(self, username: str):
         self.cursor.execute(f"SELECT service FROM {self.table_name} WHERE username = (?)", username)
