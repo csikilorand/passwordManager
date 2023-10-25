@@ -62,3 +62,13 @@ class PasswordDatabase():
         pass
     def close_connection(self):
         self.connection.close()
+    
+    @staticmethod
+    def get_const():
+        '''For testing purposes
+        Testing if the import into pytest is working
+        '''
+        return 1
+    @staticmethod
+    def get_const2():
+        return 2

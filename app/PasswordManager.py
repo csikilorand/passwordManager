@@ -1,13 +1,13 @@
-from cryptography.fernet import Fernet
 import os
+from cryptography.fernet import Fernet
+
 
 
 class PasswordManager:
     def __init__(self, key_file, password_file):
         self.key_file = key_file
         self.password_file = password_file
-        self.key = self.load_or_generate_key()
-        
+        self.key = self.load_or_generate_key()       
 
     def load_or_generate_key(self):
         if not os.path.exists(self.key_file):
@@ -24,6 +24,7 @@ class PasswordManager:
         encrypted_password = fernet.encrypt(password.encode())
         with open(self.password_file, 'a') as file:
             file.write(f"{service}:{username}:{encrypted_password.decode()}\n")
+
     def encrypt_pass(self, password)-> str:
         fernet = Fernet(self.key)
         encrypted_password = fernet.encrypt(password.encode())
@@ -39,4 +40,6 @@ class PasswordManager:
                     decrypted_password = fernet.decrypt(encrypted_password.encode()).decode()
                     return decrypted_password
         return None
+    def add(a, b):
+        return a+ b
     
