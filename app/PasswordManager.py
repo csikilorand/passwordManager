@@ -40,6 +40,4 @@ class PasswordManager:
                     decrypted_password = fernet.decrypt(encrypted_password.encode()).decode()
                     return decrypted_password
         return None
-    def add(a, b):
-        return a+ b
     

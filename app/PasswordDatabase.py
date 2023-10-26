@@ -3,19 +3,23 @@ from errors import *
 
 
 class PasswordDatabase():
-    def __init__(self, db_name, table_name):
+    def __init__(self, db_name):
         self.db_name = db_name
-        self.table_name = table_name
+        self.table_names = ('usernames', 'websites', 'passwords')
         self.connection = sqlite3.connect(self.db_name)
         self.cursor = self.connection.cursor()
-        self.__create_table__()
+        self.__create_all_tables__()
     
-           
-    def __create_table__(self):
-        self.cursor.execute(f'''CREATE TABLE IF NOT EXISTS {self.table_name} (
-                            service TEXT,
-                            username TEXT,
-                            password TEXT
+    def __create_all_tables(self):
+        self.__create_website_table___()
+        self.__create_usernames_table__()
+        self.__create_passwords_table__()
+
+
+    def __create_website_table___(self):
+        self.cursor.execute(f'''CREATE TABLE IF NOT EXISTS {self.table_names[1]} (
+                            ID INTEGER PRIMARY KEY,
+                            website TEXT
                         )''')
         self.connection.commit()
         
@@ -54,12 +58,18 @@ class PasswordDatabase():
         if len(result) == len(list()):
             raise NoDataAvailableException("No data found by this website")
         else:
-            query = "UPDATE passwords SET username = (?) WHERE = (?)"
+            query = "UPDATE passwords SET username = (?) WHERE service = (?)"
             self.cursor.execute(query, (new_username, website))
             self.connection.commit()
 
-    def update_password(self, new_password):
+    def update_password(self, new_password, username):
+        query = "UPDATE passwords SET password = (?) WHERE username = (?)"
+        self.cursor.execute(query, (new_password, username ))
+        self.connection.commit()
+
+    def remove_username(self, username):
         pass
+    
     def close_connection(self):
         self.connection.close()
     
